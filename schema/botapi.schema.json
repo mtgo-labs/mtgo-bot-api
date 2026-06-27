@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mtgo-labs/mtgo-bot-api/schema/botapi.schema.json",
+  "title": "mtgo-bot-api Bot API schema",
+  "description": "JSON Schema describing the shape of the machine-readable Telegram Bot API schema used by mtgo-bot-api (schema/methods.json, schema/types.json, schema/status.json). External tools and SDK generators can validate their input against this document.",
+  "$defs": {
+    "parameter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "type", "required", "description"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "type": { "type": "string", "minLength": 1 },
+        "required": { "type": "boolean" },
+        "description": { "type": "string" }
+      }
+    },
+    "field": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "type", "required", "description"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "type": { "type": "string", "minLength": 1 },
+        "required": { "type": "boolean" },
+        "description": { "type": "string" }
+      }
+    },
+    "method": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "title", "category", "description", "returns", "parameters", "params_complete", "official"],
+      "properties": {
+        "name": { "type": "string", "pattern": "^[a-z0-9_]+$", "description": "Lowercase wire name, e.g. 'sendmessage'." },
+        "title": { "type": "string", "minLength": 1, "description": "Conventional camelCase name, e.g. 'sendMessage'." },
+        "category": { "type": "string", "minLength": 1 },
+        "description": { "type": "string", "minLength": 1 },
+        "returns": { "type": "string", "minLength": 1 },
+        "parameters": { "type": "array", "items": { "$ref": "#/$defs/parameter" } },
+        "params_complete": { "type": "boolean" },
+        "official": { "type": "boolean" }
+      }
+    },
+    "typedef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "description", "fields"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "description": { "type": "string", "minLength": 1 },
+        "fields": { "type": "array", "items": { "$ref": "#/$defs/field" } }
+      }
+    },
+    "status": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state"],
+      "properties": {
+        "state": { "type": "string", "enum": ["implemented", "stub", "partial", "unsupported", "n/a"] },
+        "note": { "type": "string" }
+      }
+    }
+  },
+
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "api_version": { "type": "string", "pattern": "^[0-9]+(\\.[0-9]+)*$", "description": "Official Telegram Bot API version this schema tracks." },
+    "methods": { "type": "array", "items": { "$ref": "#/$defs/method" } },
+    "types": { "type": "array", "items": { "$ref": "#/$defs/typedef" } },
+    "status": { "type": "object", "additionalProperties": { "$ref": "#/$defs/status" } }
+  },
+  "anyRequired": ["methods"]
+}

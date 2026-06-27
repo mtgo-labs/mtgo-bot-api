@@ -1,0 +1,69 @@
+name: CI
+
+on:
+  push:
+    branches: [main, "*-*"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Download dependencies
+        run: go mod download
+
+      - name: Build
+        run: go build ./...
+
+      - name: Vet
+        run: go vet ./...
+
+      - name: Test (race detector)
+        run: go test -race ./...
+
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: latest
+
+      - name: govulncheck
+        run: |
+          go install golang.org/x/vuln/cmd/govulncheck@latest
+          govulncheck ./...
+      - name: Build examples
+        working-directory: examples
+        run: |
+          go mod download
+          go build ./...
+
+  leak-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Build (produce binary for scan)
+        run: go build ./...
+
+      - name: Scan for secrets in diff
+        run: |
+          if git log --oneline | head -1 | grep -q .; then
+            echo "Scanning committed changes for secrets..."
+            # Check for common secret patterns in Go source.
+            ! grep -rnE "(api_hash|api_secret|bot_token|private_key)\s*[:=]\s*[\"'][a-f0-9]{16,}" internal/ cmd/ --include="*.go" || exit 1
+            echo "No secrets detected."
+          fi

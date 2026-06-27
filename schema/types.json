@@ -1,0 +1,6 @@
+{
+  "_generated": true,
+  "_generated_by": "go run ./schema/cmd/scrape",
+  "_source": "https://core.telegram.org/bots/api",
+  "types": null
+}

@@ -1,0 +1,64 @@
+# Binaries
+/bin/
+/mtgo-bot-api
+*.exe
+
+# Spec-kit generated artifacts (keep specs, ignore transient)
+.specify/cache/
+
+# Local runtime data
+/.mtgo-bot-api/
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Secrets — environment files carry tokens/credentials and must never be committed
+.env
+.env.*
+!.env.example
+
+# Editor / OS
+.idea/
+.vscode/
+.DS_Store
+*.swp
+
+# CodeGraph (local semantic index)
+.codegraph/
+
+# Test artifacts
+coverage.out
+*.prof
+
+# Benchmark baselines are machine-specific; keep the dir, ignore captures.
+/internal/bench/baselines/*.json
+/specs/6-parity-cert-bench/reports/
+
+# Local-only: parity-compare and benchmark tooling (kept on disk for local use,
+# NOT published to GitHub). This is the full closure — the comparators
+# (internal/parity/compare), the reconciliation ledger, the reference schema
+# extractor (refschema), the FakeRPC seam fixtures, the parity-cert runner, the
+# benchmark suite (internal/bench) and its load/footprint CLI (cmd/bench).
+# Production code (cmd/mtgo-bot-api + internal/{client,convert,types,...}) does
+# not import any of these; the only production footprint is the inert
+# SetRPCForTesting/SetStoreForTesting methods in internal/client/testing_seam.go.
+/internal/parity/compare/
+/internal/parity/ledger/
+/internal/parity/refschema/
+/internal/parity/fixtures/
+/cmd/parity-cert/
+/internal/bench/
+/cmd/bench/
+
+# stray go build output
+/mtgo-bot-api
+/bench
+/parity-cert
+
+# Local-only: spec #6 planning docs + the now-unused client RPC seam (the seam
+# is only consumed by the gitignored parity/bench tooling) + the examples
+# live-compare helper script.
+/specs/6-parity-cert-bench/
+/internal/client/testing_seam.go
+/examples/test-bot/test-compare.sh

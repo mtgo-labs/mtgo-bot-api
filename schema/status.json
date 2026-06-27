@@ -1,0 +1,9 @@
+{
+  "status": {
+    "kickchatmember": { "state": "implemented", "note": "Deprecated alias of banChatMember; kept for compatibility." },
+    "getchatmemberscount": { "state": "implemented", "note": "Deprecated alias of getChatMemberCount; kept for compatibility." },
+
+    "close":  { "state": "implemented", "note": "mtgo extension; mirrors TDLib close." },
+    "logout": { "state": "implemented", "note": "mtgo extension; mirrors TDLib logout." }
+  }
+}

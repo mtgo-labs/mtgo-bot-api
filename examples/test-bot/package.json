@@ -1,0 +1,17 @@
+{
+  "name": "mtgo-bot-api-test-bot",
+  "version": "1.0.0",
+  "description": "Test bot for mtgo-bot-api type fidelity testing",
+  "scripts": {
+    "start": "bun run index.ts",
+    "local": "bun run index.ts",
+    "official": "API_ROOT=https://api.telegram.org bun run index.ts"
+  },
+  "dependencies": {
+    "grammy": "^1.44.0"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.3.14",
+    "typescript": "^5.9.3"
+  }
+}
