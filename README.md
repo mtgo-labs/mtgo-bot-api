@@ -70,8 +70,9 @@ needed.
 | **Lines of Go** | ~24,000 production (~40,000 incl. tests) |
 | **Avg test coverage** (all packages) | **~82%** — full suite green |
 
-> Server version is `0.1.0` (see [`internal/version`](internal/version/version.go)). The version is a
-> compile-time constant, not ldflags-injected.
+> Server version defaults to `0.1.0`; release builds inject the git tag via
+> `-ldflags` (see [`internal/version`](internal/version/version.go) and the
+> `Release` workflow).
 
 ---
 
