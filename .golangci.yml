@@ -1,5 +1,8 @@
 version: "2"
 
+run:
+  timeout: 5m
+
 linters:
   default: none
   enable:
@@ -12,16 +15,61 @@ linters:
     - ineffassign
     - gocritic
 
-linters-settings:
-  errcheck:
-    exclude-functions:
-      - (io.Closer).Close
-      - (*os.File).Close
-      - (*sql.DB).Close
-      - (*sql.Rows).Close
+  settings:
+    errcheck:
+      exclude-functions:
+        - (io.Closer).Close
+        - (*os.File).Close
+        - (*sql.DB).Close
+        - (*sql.Rows).Close
+
+  exclusions:
+    rules:
+      # Test scaffolding: fixture cleanup (errcheck), permission/credential
+      # fixture nags (gosec), the 110-method rpcInvoker double (unused), and
+      # style suggestions inside tests (gocritic/staticcheck).
+      - path: _test\.go
+        linters: [errcheck, gosec, unused, gocritic, staticcheck]
+      # Low-value style refactors on established control flow.
+      - text: "ifElseChain"
+        linters: [gocritic]
+      - text: "singleCaseSwitch"
+        linters: [gocritic]
+      # Optional staticcheck quickfix suggestions (De Morgan, tagged switch),
+      # not defects.
+      - text: "QF1001"
+        linters: [staticcheck]
+      - text: "QF1002"
+        linters: [staticcheck]
+      # MTProto TL (de)serialization narrows integer widths by design
+      # (int <-> int32/uint32/byte across the wire format).
+      - text: "G115"
+        linters: [gosec]
+      # Local-mode getFile deliberately serves files under the working dir;
+      # symlink escape is guarded separately (see internal/server + README).
+      - path: internal/server/server\.go
+        text: "G703"
+        linters: [gosec]
+      # math/rand is used for webhook resend jitter, not cryptography.
+      - text: "G404"
+        linters: [gosec]
+      # Webhook delivery goroutines intentionally outlive the request context;
+      # their retry/backoff lifecycle is owned by the Deliverer.
+      - text: "G118"
+        linters: [gosec]
+      # Legitimate reads of caller-controlled paths (schema scrape, file_id).
+      - text: "G304"
+        linters: [gosec]
+      # Directory/file permission nags: app-owned data dirs and generated JSON.
+      - text: "G301"
+        linters: [gosec]
+      - text: "G306"
+        linters: [gosec]
+      # ReadHeaderTimeout is governed by the server's broader flood/timeout
+      # policy, not the http.Server default.
+      - text: "G112"
+        linters: [gosec]
 
 issues:
-  exclude-rules:
-    - path: _test\.go
-      linters:
-        - errcheck
+  max-issues-per-linter: 0
+  max-same-issues: 0

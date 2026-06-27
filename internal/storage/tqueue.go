@@ -161,7 +161,7 @@ func (s *TQueueStore) LoadAll(ctx context.Context) ([]tqueue.RawEvent, error) {
 			var re tqueue.RawEvent
 			var qid, eid int64
 			if err := rows.Scan(&re.LogID, &qid, &eid, &re.ExpiresAt, &re.Data, &re.Extra, &re.UpdateType); err != nil {
-				rows.Close()
+				_ = rows.Close()
 				return nil, err
 			}
 			re.QueueID = tqueue.QueueID(qid)
@@ -170,7 +170,7 @@ func (s *TQueueStore) LoadAll(ctx context.Context) ([]tqueue.RawEvent, error) {
 			afterLogID = re.LogID
 			n++
 		}
-		rows.Close()
+		_ = rows.Close()
 		if err := rows.Err(); err != nil {
 			return nil, err
 		}
