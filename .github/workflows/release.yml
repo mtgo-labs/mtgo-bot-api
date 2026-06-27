@@ -43,6 +43,7 @@ jobs:
           VERSION: ${{ github.ref_name }}
         run: |
           set -euo pipefail
+          VERSION="${VERSION#v}"   # tag is vX.Y.Z; version string is X.Y.Z
           GOOS="${{ matrix.goos }}"
           GOARCH="${{ matrix.goarch }}"
           ARCHIVE="${APP_NAME}_${VERSION}_${GOOS}_${GOARCH}"
