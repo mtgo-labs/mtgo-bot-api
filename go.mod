@@ -3,7 +3,7 @@ module github.com/mtgo-labs/mtgo-bot-api
 go 1.26.4
 
 require (
-	github.com/mtgo-labs/mtgo v0.10.1
+	github.com/mtgo-labs/mtgo v0.10.2
 	go.uber.org/goleak v1.3.0
 	golang.org/x/net v0.56.0
 	modernc.org/sqlite v1.53.0
