@@ -36,13 +36,12 @@ func connect(ctx context.Context, p Params, token, botID string) (*telegram.Clie
 		SessionName: botID,
 		SessionString: sessStr, // restore if available (migration from old format)
 		SavePeers:     false,   // we maintain our own peer cache
-		// Auto-reconnect + health pings + update recovery. These must be set
+		// Auto-reconnect + health pings. These must be set
 		// explicitly because mtgo's mergeConfig blind-copies them (resetting
 		// DefaultConfig's true → false). Without them, a dropped MTProto
 		// connection never recovers and every RPC fails until restart.
-		ReconnectEnabled:      true,
-		HealthEnabled:         true,
-		UpdateRecoveryEnabled: true,
+		ReconnectEnabled: true,
+		HealthEnabled:    true,
 	}
 	cl, err := telegram.NewClient(p.APIID, p.APIHash, cfg)
 	if err != nil {
