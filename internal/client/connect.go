@@ -2,9 +2,11 @@ package client
 
 import (
 	"context"
+	"log/slog"
 
 	"github.com/mtgo-labs/mtgo/telegram"
 	"github.com/mtgo-labs/mtgo/tg"
+	"github.com/mtgo-labs/plugins/updatesrecovery"
 
 	botlog "github.com/mtgo-labs/mtgo-bot-api/internal/log"
 	"github.com/mtgo-labs/mtgo-bot-api/internal/storage"
@@ -33,21 +35,26 @@ func connect(ctx context.Context, p Params, token, botID string) (*telegram.Clie
 		// is created in the working dir as <botID>.session and persists the
 		// auth key across restarts. Removed InMemory+SessionString which caused
 		// silent connection failures when the session string was corrupted.
-		SessionName: botID,
-		SessionString: sessStr, // restore if available (migration from old format)
-		SavePeers:     false,   // we maintain our own peer cache
-		// Auto-reconnect + health pings. These must be set
-		// explicitly because mtgo's mergeConfig blind-copies them (resetting
-		// DefaultConfig's true → false). Without them, a dropped MTProto
-		// connection never recovers and every RPC fails until restart.
-		ReconnectEnabled: true,
-		HealthEnabled:    true,
+		SessionName:       botID,
+		SessionString:     sessStr, // restore if available (migration from old format)
+		SavePeers:         false,   // we maintain our own peer cache
+		ReconnectEnabled:  true,
+		HealthEnabled:     true,
+		RetryRPCOnReconnect: true,
 	}
 	cl, err := telegram.NewClient(p.APIID, p.APIHash, cfg)
 	if err != nil {
 		_ = store.Close()
 		return nil, nil, nil, err
 	}
+
+	// Register the updatesrecovery plugin for reliable update delivery.
+	// Handles pts/qts/seq gap detection, getDifference recovery, per-channel
+	// recovery, idle watchdog, and affected pts feedback.
+	cl.Use(updatesrecovery.New(
+		updatesrecovery.WithLogger(slog.Default()),
+	))
+
 	if err := cl.Connect(connectTimeout); err != nil {
 		_ = store.Close()
 		return nil, nil, nil, err
