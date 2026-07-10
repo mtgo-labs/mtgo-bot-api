@@ -52,6 +52,7 @@ func connect(ctx context.Context, p Params, token, botID string) (*telegram.Clie
 	// Handles pts/qts/seq gap detection, getDifference recovery, per-channel
 	// recovery, idle watchdog, and affected pts feedback.
 	cl.Use(updatesrecovery.New(
+		updatesrecovery.NewMemoryStore(),
 		updatesrecovery.WithLogger(slog.Default()),
 	))
 
