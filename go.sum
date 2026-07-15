@@ -12,8 +12,8 @@ github.com/klauspost/compress v1.19.0 h1:sXLILfc9jV2QYWkzFOPWStmcUVH2RHEB1JCdY2o
 github.com/klauspost/compress v1.19.0/go.mod h1:cwPg85FWrGar70rWktvGQj8/hthj3wpl0PGDogxkrSQ=
 github.com/mattn/go-isatty v0.0.20 h1:xfD0iDuEKnDkl03q4limB+vH+GxLEtL/jb4xVJSWWEY=
 github.com/mattn/go-isatty v0.0.20/go.mod h1:W+V8PltTTMOvKvAeJH7IuucS94S2C6jfK/D7dTCTo3Y=
-github.com/mtgo-labs/mtgo v0.15.0 h1:V73FZLW11oMT7cyeDMViEf4Lp+Fdvx/dxLXwtY/rFZU=
-github.com/mtgo-labs/mtgo v0.15.0/go.mod h1:YcGcTRzDQVeFqahfa5c5L6/pCxjTPMnblDTwRI/pKes=
+github.com/mtgo-labs/mtgo v0.15.1 h1:GIX2mGri0zlT1z+MGhdNWdceXYWv2KpF/SEmSsM9f3A=
+github.com/mtgo-labs/mtgo v0.15.1/go.mod h1:YcGcTRzDQVeFqahfa5c5L6/pCxjTPMnblDTwRI/pKes=
 github.com/mtgo-labs/plugins/updatesrecovery v0.4.0 h1:c+iQtPkYN2Pz4VXG3xLbARs8IGRv4MLQrXLXe7e+g0M=
 github.com/mtgo-labs/plugins/updatesrecovery v0.4.0/go.mod h1:AqxzY2P5GGgMtP2/HjDDYXwZvpwwFTvwPjd+AKCb488=
 github.com/mtgo-labs/storage v0.5.0 h1:x6asAZcLpfhqxEjR6kP4l42246R9XodZGawXsLWLuq8=
