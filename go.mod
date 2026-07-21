@@ -3,7 +3,7 @@ module github.com/mtgo-labs/mtgo-bot-api
 go 1.26.5
 
 require (
-	github.com/mtgo-labs/mtgo v0.15.0
+	github.com/mtgo-labs/mtgo v0.16.1
 	github.com/mtgo-labs/plugins/updatesrecovery v0.4.0
 	go.uber.org/goleak v1.3.0
 	golang.org/x/net v0.56.0
@@ -13,8 +13,9 @@ require (
 require (
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/google/uuid v1.6.0 // indirect
-	github.com/klauspost/compress v1.19.0 // indirect
+	github.com/klauspost/compress v1.19.1 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
+	github.com/mtgo-labs/session-converter v0.5.0 // indirect
 	github.com/mtgo-labs/storage v0.5.0 // indirect
 	github.com/ncruces/go-strftime v1.0.0 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
