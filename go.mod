@@ -1,6 +1,6 @@
 module github.com/mtgo-labs/mtgo-bot-api
 
-go 1.26.6
+go 1.26.9
 
 require (
 	github.com/mtgo-labs/mtgo v0.22.0
