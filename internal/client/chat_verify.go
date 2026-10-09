@@ -37,7 +37,7 @@ func (c *Client) verifyChat(ctx context.Context, q *server.Query) (any, error) {
 		Peer:    peer,
 	}
 	if desc := q.Arg("custom_description"); desc != "" {
-		req.CustomDescription = desc
+		req.CustomDescription = &tg.TextWithEntities{Text: desc}
 		req.Flags.Set(2)
 	}
 	req.Flags.Set(1) // enabled flag
@@ -66,7 +66,7 @@ func (c *Client) verifyUser(ctx context.Context, q *server.Query) (any, error) {
 		Peer:    &tg.InputPeerUser{UserID: uid},
 	}
 	if desc := q.Arg("custom_description"); desc != "" {
-		req.CustomDescription = desc
+		req.CustomDescription = &tg.TextWithEntities{Text: desc}
 		req.Flags.Set(2)
 	}
 	req.Flags.Set(1)
